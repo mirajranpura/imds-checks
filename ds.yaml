@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: imds
+spec:
+  selector:
+    matchLabels:
+      name: imds
+  template:
+    metadata:
+      labels:
+        name: imds
+    spec:
+      tolerations:
+      - operator: Exists
+      containers:
+      - name: imds
+        image: centos:centos7
+        command: ["/bin/bash"]
+        args: ["-c","/opt/imds.sh"]
+      env:
+        - name: MY_NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        volumeMounts:
+        - mountPath: /opt/
+          name: imds-finder
+      volumes: 
+      - name: imds-finder
+        configMap:
+          name: imds-finder
+          defaultMode: 0777
