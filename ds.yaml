@@ -18,11 +18,11 @@ spec:
         image: centos:centos7
         command: ["/bin/bash"]
         args: ["-c","/opt/imds.sh"]
-      env:
-        - name: MY_NODE_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: spec.nodeName
+        env:
+          - name: MY_NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
         resources:
           limits:
             cpu: 100m
